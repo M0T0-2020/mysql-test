@@ -32,8 +32,8 @@ SHOW DATABASES;
 
 ## python3.7環境の作成
 ```shell
-python3.7 -m venv venv37
-source venv37/bin/activate
+python3.10 -m venv venv10
+source venv10/bin/activate
 pip install -U pip
 pip install -r requirements.txt
 ```
