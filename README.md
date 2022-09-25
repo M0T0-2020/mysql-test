@@ -6,13 +6,20 @@ docker pull mysql
 
 docker run --name mysql -e MYSQL_ROOT_PASSWORD=mysql -d -p 3306:3306 mysql
 
-# これでContainer IDを取得
+# CONTAINER ID を取得
 docker ps
 
 # Containerに接続
-docker exec -it 'CONTAINER ID' bash
+docker exec -it <CONTAINER ID> bash
 ```
 ## mysqlにログイン　パスワードは mysql
 ```bash
 mysql -u root -p
+```
+
+## mysql
+### データベースを作成
+```mysql
+CREATE DATABASE python_test;
+SHOW DATABASES;
 ```
