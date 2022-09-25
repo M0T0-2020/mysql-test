@@ -17,9 +17,11 @@ docker exec -it <CONTAINER ID> bash
 mysql -u root -p
 ```
 
-## mysql
+## sql
 ### データベースを作成
 ```mysql
+-- データベース python_test を作成
 CREATE DATABASE python_test;
+-- データベースの確認
 SHOW DATABASES;
 ```
