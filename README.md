@@ -5,7 +5,6 @@
 docker pull mysql
 
 docker run --name mysql -e MYSQL_ROOT_PASSWORD=mysql -d -p 3306:3306 mysql
-
 # CONTAINER ID を取得
 docker ps
 
@@ -16,6 +15,14 @@ export MYSQLPASSWORD=mysql
 # Containerに接続
 docker exec -it $CONTAINERID bash
 ```
+
+```shell
+# 再起動
+docker start $CONTAINERID
+# 停止
+docker stop $CONTAINERID
+```
+
 ## mysqlにログイン　パスワードは mysql
 ```bash
 mysql -u root -p
@@ -32,8 +39,8 @@ SHOW DATABASES;
 
 ## python3.7環境の作成
 ```shell
-python3.10 -m venv venv10
-source venv10/bin/activate
+python3.7 -m venv venv
+source venv/bin/activate
 pip install -U pip
 pip install -r requirements.txt
 ```
