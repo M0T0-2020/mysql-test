@@ -1,0 +1,18 @@
+DROP DATABASE IF EXISTS mydb;
+create database mydb;
+USE mydb;
+
+create table table01(col1 int, col2 varchar(10), col3 date, col4 float);
+
+DROP PROCEDURE if EXISTS doWhile;
+
+DELIMITER //
+create PROCEDURE doWhile() 
+BEGIN
+    DECLARE i INT default 0;
+    WHILE i < 20 DO
+        INSERT INTO table01 VALUES (i, 'index', '2020-01-01', i/2);
+        set i = i + 1;
+    END WHILE;
+END
+//

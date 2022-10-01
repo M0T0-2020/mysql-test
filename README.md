@@ -1,23 +1,15 @@
 # mysql-test
 
-## dockerでmysql環境を作成
+## dockerでmysql環境を作成し、コンテナ内に移動
 ```shell
-docker image build -t mysql-1:latest . 
-docker run --name mysql-1  -d -p 3306:3306 mysql-1
-# CONTAINER ID を取得
-docker ps
-
-# CONTAINER IDとパスワードを保存
-export CONTAINERID=<CONTAINER ID>
-# Containerに接続
-docker exec -it $CONTAINERID bash
+sh DockerBuildStart.sh
 ```
 
 ```shell
 # 再起動
-docker start $CONTAINERID
+docker start $(docker ps -q | head -1)
 # 停止
-docker stop $CONTAINERID
+docker stop $(docker ps -q | head -1)
 ```
 
 ## mysqlにログイン　パスワードは mysql
@@ -34,7 +26,11 @@ CREATE DATABASE python_test;
 SHOW DATABASES;
 
 -- テーブルの作成
-source ./sql/initialize.sql
+DROP DATABASE IF EXISTS mydb;
+create database mydb;
+USE mydb;
+create table table01(col1 int, col2 varchar(10), col3 date, col4 float);
+INSERT INTO table01 VALUES (1, 'asdfk9', '2020-01-01', 1/2);
 
 -- 作成したテーブルの確認
 USE mydb;
