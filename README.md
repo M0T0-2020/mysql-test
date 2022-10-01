@@ -2,16 +2,13 @@
 
 ## dockerでmysql環境を作成
 ```shell
-docker pull mysql
-
-docker run --name mysql -e MYSQL_ROOT_PASSWORD=mysql -d -p 3306:3306 mysql
+docker image build -t mysql-1:latest . 
+docker run --name mysql-1  -d -p 3306:3306 mysql-1
 # CONTAINER ID を取得
 docker ps
 
 # CONTAINER IDとパスワードを保存
 export CONTAINERID=<CONTAINER ID>
-export MYSQLPASSWORD=mysql
-
 # Containerに接続
 docker exec -it $CONTAINERID bash
 ```
@@ -35,6 +32,10 @@ mysql -u root -p
 CREATE DATABASE python_test;
 -- データベースの確認
 SHOW DATABASES;
+
+USE mydb;
+SHOW TABLES;
+SELECT * FROM table01;
 ```
 
 ## python3.7環境の作成
