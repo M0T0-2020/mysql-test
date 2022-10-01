@@ -33,6 +33,10 @@ CREATE DATABASE python_test;
 -- データベースの確認
 SHOW DATABASES;
 
+-- テーブルの作成
+source ./sql/initialize.sql
+
+-- 作成したテーブルの確認
 USE mydb;
 SHOW TABLES;
 SELECT * FROM table01;
