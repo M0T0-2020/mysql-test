@@ -1,3 +1,4 @@
+"""
 import os
 import mysql.connector
 
@@ -16,3 +17,4 @@ conn.ping(reconnect=True)
 
 # 接続できているかどうか確認
 print(conn.is_connected())
+"""
