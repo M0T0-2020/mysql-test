@@ -8,7 +8,7 @@ conn = mysql.connector.connect(
     port='3306',
     user='root',
     password=password,
-    database='python_test'
+    database='mydb'
 )
 
 # コネクションが切れた時に再接続してくれるよう設定

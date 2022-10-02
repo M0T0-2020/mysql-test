@@ -4,6 +4,10 @@
 ```shell
 sh DockerBuildStart.sh
 ```
+### M1 mac の場合以下を実行する
+```shell
+brew install mysql-connector-python
+```
 
 ```shell
 # 再起動
@@ -38,9 +42,9 @@ SHOW TABLES;
 SELECT * FROM table01;
 ```
 
-## python3.7環境の作成
+## python3.10環境の作成
 ```shell
-python3.7 -m venv venv
+python3.10 -m venv venv
 source venv/bin/activate
 pip install -U pip
 pip install -r requirements.txt
