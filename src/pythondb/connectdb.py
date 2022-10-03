@@ -23,7 +23,7 @@ engine = create_engine(
 print(engine.connect())
 
 
-def create_table(conn: sqlalchemyCon):
+def create_table(conn: sqlalchemyCon, n_rows: int = 2000):
     conn.execute(text("""DROP TABLE IF EXISTS table01;"""))
     conn.execute(
         text(
@@ -39,7 +39,7 @@ def create_table(conn: sqlalchemyCon):
     insert_sql: list[str] = []
     insert_value: Dict[str, Any] = {}
     base_date = datetime.datetime.strptime("2022-1-1", "%Y-%m-%d")
-    for i in range(2000):
+    for i in range(n_rows):
         date = base_date + datetime.timedelta(days=i)
         date_str = date.strftime("%Y-%m-%d")
         insert_sql.append(f"(:col1{i}, :col2{i}, :col3{i}, :col4{i})")
@@ -79,9 +79,27 @@ def create_table(conn: sqlalchemyCon):
         print(row["col4"], type(row["col4"]))
 
 
-def _get_groupby(conn: sqlalchemyCon, col: str):
-    pass
+def _get_groupby_col4(conn: sqlalchemyCon, limit: int):
+    assert type(limit) == int, "limit must be integer!!"
+    result = conn.execute(
+        text(
+            f"""
+            SELECT col4 as `col4`, COUNT(col4) as `count_index`, AVG(col3) as `avg_col3`
+            FROM table01
+            GROUP BY `col4`
+            ORDER BY `col4`
+            LIMIT {limit}
+            ;
+            """
+        )
+    )
+    rows = result.all()
+    print(len(rows))
+    print(list(result.keys()))
+    for i, row in enumerate(rows):
+        print(i, row[f"col4"], row[f"count_index"], row["avg_col3"])
 
 
 with engine.begin() as conn:
     create_table(conn=conn)
+    _get_groupby_col4(conn=conn, limit=10)
