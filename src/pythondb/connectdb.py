@@ -100,6 +100,32 @@ def _get_groupby_col4(conn: sqlalchemyCon, limit: int):
         print(i, row[f"col4"], row[f"count_index"], row["avg_col3"])
 
 
+def _get_groupby_transform_col4(conn: sqlalchemyCon, limit: int):
+    assert type(limit) == int, "limit must be integer!!"
+    result = conn.execute(
+        text(
+            f"""
+            SELECT * 
+            FROM table01
+            LEFT JOIN (
+                SELECT col4 as `col4`, COUNT(col4) as `count_index`, AVG(col3) as `avg_col3`
+                FROM table01 AS table_tmp
+                GROUP BY `col4`
+            ) 
+            ON table01.col4 =  table_tmp.col4
+            LIMIT {limit}
+            ;
+            """
+        )
+    )
+    rows = result.all()
+    print(len(rows))
+    print(list(result.keys()))
+    for i, row in enumerate(rows):
+        print(i, row[f"col4"], row[f"count_index"], row["avg_col3"])
+
+
 with engine.begin() as conn:
     create_table(conn=conn)
     _get_groupby_col4(conn=conn, limit=10)
+    _get_groupby_transform_col4(conn=conn, limit=10)
