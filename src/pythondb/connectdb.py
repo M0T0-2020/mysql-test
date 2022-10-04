@@ -25,12 +25,14 @@ print(engine.connect())
 
 def create_table(conn: sqlalchemyCon, n_rows: int = 2000):
     conn.execute(text("""DROP TABLE IF EXISTS table01;"""))
+    # col4 にインデックスを貼る
     conn.execute(
         text(
             """
             CREATE table table01
             (
                 `id` bigint NOT NULL AUTO_INCREMENT, col1 varchar(128), col2 date, col3 float, col4 int,
+                INDEX col4_index (col4),
                 PRIMARY KEY (`id`)
             );
             """
@@ -102,6 +104,31 @@ def _get_groupby_col4(conn: sqlalchemyCon, limit: int):
 
 def _get_groupby_transform_col4(conn: sqlalchemyCon, limit: int):
     assert type(limit) == int, "limit must be integer!!"
+
+    # explainを使って、Indexが効くか確認
+    explain_result = conn.execute(
+        text(
+            f"""
+            EXPLAIN
+            SELECT table01.col4, table02.count_index AS `count_col4`, table02.avg_col3 AS `avg_col3`
+            FROM 
+                table01
+                LEFT JOIN (
+                    SELECT col4 AS `col4`, COUNT(col4) as `count_index`, AVG(col3)/100 as `avg_col3`
+                    FROM table01
+                    GROUP BY col4
+                ) 
+            AS table02
+            ON table01.col4 =  table02.col4
+            LIMIT {limit}
+            ;
+            """
+        )
+    )
+    print("EXPLAIN")
+    for row in explain_result.all():
+        print(row)
+
     result = conn.execute(
         text(
             f"""
