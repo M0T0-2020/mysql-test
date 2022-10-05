@@ -157,7 +157,31 @@ def _get_groupby_transform_col4(conn: sqlalchemyCon, limit: int):
         pass
 
 
+def _get_groupby_having_col4(conn: sqlalchemyCon):
+    # explainを使って、Indexが効くか確認
+    result = conn.execute(
+        text(
+            f"""
+            SELECT col4 AS col4, COUNT(col4) AS `count_col4`, AVG(col3) AS `avg_col3`
+            FROM table01
+            GROUP BY col4
+            HAVING COUNT(col4) > 120
+            ;
+            """
+        )
+    )
+    rows = result.all()
+    print(len(rows))
+    print(list(result.keys()))
+    try:
+        for i, row in enumerate(rows):
+            print(i, row[f"col4"], row[f"count_col4"], row[f"avg_col3"])
+    except:
+        pass
+
+
 with engine.begin() as conn:
     create_table(conn=conn)
     _get_groupby_col4(conn=conn, limit=10)
     _get_groupby_transform_col4(conn=conn, limit=30)
+    _get_groupby_having_col4(conn=conn)
